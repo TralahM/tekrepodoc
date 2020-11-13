@@ -1,24 +1,5 @@
-<img src="https://img.shields.io/github/license/TralahM/tekrepodoc">
-<img src="https://img.shields.io/github/last-commit/TralahM/tekrepodoc">
-<img src="https://img.shields.io/github/contributors/TralahM/tekrepodoc">
-<img src="https://img.shields.io/github/issues-pr-raw/TralahM/tekrepodoc?color=blue">
-<img src="https://img.shields.io/github/issues-pr-closed-raw/TralahM/tekrepodoc?color=red">
-<img src="https://img.shields.io/github/issues-raw/TralahM/tekrepodoc?color=green">
-<img src="https://img.shields.io/github/issues-closed-raw/TralahM/tekrepodoc?color=yellow"">
-<img src="https://img.shields.io/github/forks/TralahM/tekrepodoc?label=Forks&style=social">
-<img src="https://img.shields.io/github/forks/TralahM/tekrepodoc?label=Forks&style=social">
-<img src="https://img.shields.io/github/stars/TralahM/tekrepodoc?style=social">
-<img src="https://img.shields.io/github/watchers/TralahM/tekrepodoc?label=Watch&style=social">
-<img src="https://img.shields.io/github/downloads/TralahM/tekrepodoc/total">
-<img src="https://img.shields.io/github/repo-size/TralahM/tekrepodoc">
-<img src="https://img.shields.io/github/languages/count/TralahM/tekrepodoc">
-<img src="https://img.shields.io/github/v/tag/TralahM/tekrepodoc">
-<img src="https://img.shields.io/readthedocs/tekrepodoc">
-<img src="https://img.shields.io/pypi/v/tekrepodoc">
-<img src="https://img.shields.io/pypi/pyversions/tekrepodoc">
-<img src="https://img.shields.io/pypi/wheel/tekrepodoc">
-<img src="https://img.shields.io/pypi/status/tekrepodoc?label=pypi%20status">
-<img src="https://img.shields.io/pypi/format/tekrepodoc?label=pypi%20format">
+<img src="https://img.shields.io/github/license/TralahM/tekrepodoc"> <img src="https://img.shields.io/github/last-commit/TralahM/tekrepodoc"> <img src="https://img.shields.io/github/contributors/TralahM/tekrepodoc"> <img src="https://img.shields.io/github/issues-pr-raw/TralahM/tekrepodoc?color=blue"> <img src="https://img.shields.io/github/issues-pr-closed-raw/TralahM/tekrepodoc?color=red"> <img src="https://img.shields.io/github/issues-raw/TralahM/tekrepodoc?color=green"> <img src="https://img.shields.io/github/issues-closed-raw/TralahM/tekrepodoc?color=yellow""> <img src="https://img.shields.io/github/forks/TralahM/tekrepodoc?label=Forks&style=social"> <img src="https://img.shields.io/github/forks/TralahM/tekrepodoc?label=Forks&style=social"> <img src="https://img.shields.io/github/stars/TralahM/tekrepodoc?style=social"> <img src="https://img.shields.io/github/watchers/TralahM/tekrepodoc?label=Watch&style=social"> <img src="https://img.shields.io/github/downloads/TralahM/tekrepodoc/total"> <img src="https://img.shields.io/github/repo-size/TralahM/tekrepodoc"> <img src="https://img.shields.io/github/languages/count/TralahM/tekrepodoc"> <img src="https://img.shields.io/github/v/tag/TralahM/tekrepodoc"> <img src="https://img.shields.io/readthedocs/tekrepodoc">
+<img src="https://img.shields.io/pypi/v/tekrepodoc"> <img src="https://img.shields.io/pypi/pyversions/tekrepodoc"> <img src="https://img.shields.io/pypi/wheel/tekrepodoc"> <img src="https://img.shields.io/pypi/status/tekrepodoc?label=pypi%20status"> <img src="https://img.shields.io/pypi/format/tekrepodoc?label=pypi%20format">
 
 # tekrepodoc
 > Utility Tool to Generate Common Project Files using sensible templates every one can agree on. Useful for Git Repositories, Supports Sphinx templates, Community Health Files, READMEs, pypi project configurations.
