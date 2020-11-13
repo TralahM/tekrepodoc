@@ -25,6 +25,8 @@ __all__ = [
     "config_from_file",
     "get_all_template_variables",
     "bump_version",
+    "dot_files",
+    "update_config_file",
 ]
 
 
@@ -132,6 +134,17 @@ def community_health(args):
     for t_name in render.CommunityHealth_Templates:
         writer.write_rendered_template(
             *render.render_template(t_name, **kwargs))
+    return
+
+
+def dot_files(args):
+    """Generate all dot files .gitignore,.gitattributes,.mailmap."""
+    kwargs = config_from_file(args.config_file)
+    dotfile_templates = [".gitignore.j2", ".gitattributes.j2", ".mailmap.j2"]
+    for t_name in dotfile_templates:
+        writer.write_rendered_template(
+            *render.render_template(t_name, **kwargs),
+        )
     return
 
 
@@ -366,6 +379,14 @@ def main():
     )
     sphinx_docs_parser.set_defaults(func=sphinx_docs)
     # End SPHINX Subparser
+    # Begin dot_files Subparser
+    dot_files_parser = subparsers.add_parser(
+        "dot_files",
+        aliases=["dots"],
+        help=dot_files.__doc__,
+    )
+    dot_files_parser.set_defaults(func=dot_files)
+    # End dot_files Subparser
     args = parser.parse_args()
     args.func(args)
     return
