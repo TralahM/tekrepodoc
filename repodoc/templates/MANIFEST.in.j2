@@ -1,0 +1,7 @@
+include LICENSE
+include *.py
+include README.md
+include readthedocs.yml
+recursive-include docs *
+recursive-include {{ package_name|default('*') }}
+

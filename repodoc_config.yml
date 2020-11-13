@@ -1,0 +1,19 @@
+author_email: musyoki.brian@tralahtek.com
+author_name: Tralah M Brian
+author_username: TralahM
+console_scripts:
+- repodoc = repodoc.commands:main
+install_requires:
+- PyYaml
+- jinja2
+- jinja2-time
+language: python
+licence: GPLv2
+package_name: tekrepodoc
+program_description: Utility Tool to Generate Common Project Files using sensible
+  templates every one can agree on. Useful for Git Repositories, Supports Sphinx templates,
+  Community Health Files, READMEs, pypi project configurations.
+program_name: tekrepodoc
+readthedocs: true
+repo_name: tekrepodoc
+version: 'attr: repodoc.__version__'

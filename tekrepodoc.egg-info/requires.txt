@@ -1,0 +1,7 @@
+PyYaml
+jinja2
+jinja2-time
+
+[docs]
+sphinx
+sphinx-automodapi

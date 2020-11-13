@@ -1,0 +1,83 @@
+<img src="https://img.shields.io/github/license/{{ author_username }}/{{ repo_name }}">
+<img src="https://img.shields.io/github/last-commit/{{ author_username }}/{{ repo_name }}">
+<img src="https://img.shields.io/github/contributors/{{ author_username }}/{{ repo_name }}">
+<img src="https://img.shields.io/github/issues-pr-raw/{{ author_username }}/{{ repo_name }}?color=blue">
+<img src="https://img.shields.io/github/issues-pr-closed-raw/{{ author_username }}/{{ repo_name }}?color=red">
+<img src="https://img.shields.io/github/issues-raw/{{ author_username }}/{{ repo_name }}?color=green">
+<img src="https://img.shields.io/github/issues-closed-raw/{{ author_username }}/{{ repo_name }}?color=yellow"">
+<img src="https://img.shields.io/github/forks/{{ author_username }}/{{ repo_name }}?label=Forks&style=social">
+<img src="https://img.shields.io/github/forks/{{ author_username }}/{{ repo_name }}?label=Forks&style=social">
+<img src="https://img.shields.io/github/stars/{{ author_username }}/{{ repo_name }}?style=social">
+<img src="https://img.shields.io/github/watchers/{{ author_username }}/{{ repo_name }}?label=Watch&style=social">
+<img src="https://img.shields.io/github/downloads/{{ author_username }}/{{ repo_name }}/total">
+<img src="https://img.shields.io/github/repo-size/{{ author_username }}/{{ repo_name }}/total">
+<img src="https://img.shields.io/github/languages/count/{{ author_username }}/{{ repo_name }}">
+<img src="https://img.shields.io/github/v/tag/{{ author_username }}/{{ repo_name }}">
+<img src="https://img.shields.io/readthedocs/{{ package_name }}">
+<img src="https://img.shields.io/pypi/v/{{ package_name }}">
+<img src="https://img.shields.io/pypi/pyversions/{{ package_name }}">
+<img src="https://img.shields.io/pypi/wheel/{{ package_name }}">
+<img src="https://img.shields.io/pypi/status/{{ package_name }}?label=pypi%20status">
+<img src="https://img.shields.io/pypi/format/{{ package_name }}?label=pypi%20format">
+---
+
+# {{ repo_name }}
+> {{ program_description }}
+
+---
+
+### Table of Contents
+- [QuickStart](#QuickStart)
+- [Documentation/Usage](#Documentation)
+- [Contributing](#Contributing)
+- [Credits](#Credits)
+
+---
+## QuickStart
+#### Installation
+
+```
+pip install {{ package_name }}
+```
+#### From Source
+```
+git clone https://github.com/{{author_username}}/{{repo_name}}
+cd {{repo_name}}
+{% if language=="python" %}
+python setup.py bdist_wheel
+pip install -e .
+{% endif %}
+```
+---
+
+## Documentation
+{% if readthedocs %}
+[![Documentation](https://img.shields.io/badge/Docs-{{package_name}}-blue.svg?style=for-the-badge)](https://{{ package_name }}.readthedocs.io)
+{% else %}
+[![Documentation](https://img.shields.io/badge/Docs-{{repo_name}}-blue.svg?style=for-the-badge)](https://github.com/{{author_username}}/{{repo_name}})
+{% endif %}
+
+#### API Reference
+
+---
+## Contributing
+
+---
+
+## Credits
+[![TralahTek](https://img.shields.io/badge/Organization-TralahTek-black.svg?style=for-the-badge&logo=github)](https://github.com/TralahTek)
+[![TralahM](https://img.shields.io/badge/Engineer-TralahM-blue.svg?style=for-the-badge&logo=github)](https://github.com/TralahM)
+[![TralahM](https://img.shields.io/badge/Maintainer-TralahM-green.svg?style=for-the-badge&logo=github)](https://github.com/TralahM)
+
+
+
+[![](https://img.shields.io/badge/Github-TralahM-green?style=for-the-badge&logo=github)](https://github.com/TralahM)
+[![](https://img.shields.io/badge/Twitter-%40tralahtek-blue?style=for-the-badge&logo=twitter)](https://twitter.com/TralahM)
+[![TralahM](https://img.shields.io/badge/Kaggle-TralahM-purple.svg?style=for-the-badge&logo=kaggle)](https://kaggle.com/TralahM)
+[![TralahM](https://img.shields.io/badge/LinkedIn-TralahM-white.svg?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/TralahM)
+
+
+[![Blog](https://img.shields.io/badge/Blog-tralahm.tralahtek.com-blue.svg?style=for-the-badge&logo=rss)](https://tralahm.tralahtek.com)
+
+[![TralahTek](https://img.shields.io/badge/Organization-TralahTek-cyan.svg?style=for-the-badge)](https://org.tralahtek.com)
+---
