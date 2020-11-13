@@ -17,11 +17,11 @@
 ## QuickStart
 #### Installation
 
-```
+```console
 pip install tekrepodoc
 ```
 #### From Source
-```
+```console
 git clone https://github.com/TralahM/tekrepodoc
 cd tekrepodoc
 
