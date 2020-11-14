@@ -2,6 +2,7 @@
 import argparse
 import yaml
 import os
+import logging
 import repodoc
 from repodoc.log import configure_logger
 
@@ -12,6 +13,8 @@ except ImportError:
 from . import writer
 from . import render
 
+logger = logging.getLogger(__name__)
+
 __all__ = [
     "writer",
     "render",
@@ -21,6 +24,7 @@ __all__ = [
     "community_health",
     "sphinx_docs",
     "licence",
+    "logger",
     "readme",
     "pypi_project",
     "usage",
@@ -61,6 +65,10 @@ def resolve_template_name(tname):
 
 def get_template_variables(args):
     """Return all variables for the given template."""
+    configure_logger(
+        stream_level="DEBUG" if args.verbose else "INFO",
+        debug_file=None,
+    )
     template_name = args.template_name
     t_name = template_name if template_name.endswith(
         ".j2") else template_name + ".j2"
@@ -93,7 +101,7 @@ def gen_config_file(filename="repodoc_config.yml", **kwargs):
     data = gen_default_context()
     with open(filename, "w") as wf:
         yaml.dump(data, wf, Dumper=Dumper)
-    print(f"Generated Configuration in {filename}")
+    logger.info(f"Generated Configuration in {filename}")
     return data
 
 
@@ -101,7 +109,7 @@ def update_config_file(file, config):
     """Update Config File with config data."""
     with open(file, "w") as wf:
         yaml.dump(config, wf, Dumper=Dumper)
-    print(f"Updated Configuration in {file}")
+    logger.info(f"Updated Configuration in {file}")
     return
 
 
@@ -114,8 +122,12 @@ def config_from_file(config_file):
 
 def config(args):
     """Configure Subcommand to init,set,get,list configs."""
+    configure_logger(
+        stream_level="DEBUG" if args.verbose else "INFO",
+        debug_file=None,
+    )
     to_append = ["install_requires", "console_scripts"]
-    bool_vals = ["readthedocs"]
+    bool_vals = ["readthedocs", "use_docs", "pypi"]
     config = config_from_file(args.config_file)
     if args.list:
         print(yaml.dump(config))
@@ -152,6 +164,10 @@ def config(args):
 
 def community_health(args):
     """Generate Community Health Guidelines."""
+    configure_logger(
+        stream_level="DEBUG" if args.verbose else "INFO",
+        debug_file=None,
+    )
     if args.use_conf:
         kwargs = config_from_file(args.config_file)
     else:
@@ -173,6 +189,10 @@ def community_health(args):
 
 def dot_files(args):
     """Generate all dot files .gitignore,.gitattributes,.mailmap."""
+    configure_logger(
+        stream_level="DEBUG" if args.verbose else "INFO",
+        debug_file=None,
+    )
     kwargs = config_from_file(args.config_file)
     for t_name in render.DotTemplates:
         writer.write_rendered_template(
@@ -183,6 +203,10 @@ def dot_files(args):
 
 def sphinx_docs(args):
     """Generate Sphinx Documentation Templates."""
+    configure_logger(
+        stream_level="DEBUG" if args.verbose else "INFO",
+        debug_file=None,
+    )
     if args.use_conf:
         kwargs = config_from_file(args.config_file)
     else:
@@ -201,6 +225,10 @@ def sphinx_docs(args):
 
 def licence(args):
     """Generate Licence Command."""
+    configure_logger(
+        stream_level="DEBUG" if args.verbose else "INFO",
+        debug_file=None,
+    )
     if args.use_conf:
         kwargs = config_from_file(args.config_file)
     else:
@@ -217,6 +245,10 @@ def licence(args):
 
 def readme(args):
     """Generate README command."""
+    configure_logger(
+        stream_level="DEBUG" if args.verbose else "INFO",
+        debug_file=None,
+    )
     if args.use_conf:
         kwargs = config_from_file(args.config_file)
     else:
@@ -233,6 +265,10 @@ def readme(args):
 
 def pypi_project(args):
     """Generate Pypi Manifest,setup.cfg,setup.py Command."""
+    configure_logger(
+        stream_level="DEBUG" if args.verbose else "INFO",
+        debug_file=None,
+    )
     if args.use_conf:
         kwargs = config_from_file(args.config_file)
     else:
@@ -257,6 +293,10 @@ def pypi_project(args):
 
 def bump_version(args):
     """Increment Project Package Version in setup.cfg and docs/conf.py."""
+    configure_logger(
+        stream_level="DEBUG" if args.verbose else "INFO",
+        debug_file=None,
+    )
     return
 
 
@@ -294,7 +334,7 @@ def main():
         action="version",
         version=f"{repodoc.__name__}  v{repodoc.__version__}",
     )
-    subparsers = parser.add_subparsers()
+    subparsers = parser.add_subparsers(title="subcommands")
     # Begin vars_parser Subparser
     vars_parser = subparsers.add_parser(
         "get_vars",
