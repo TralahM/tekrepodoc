@@ -1,6 +1,9 @@
 """repodoc main entry points, i.e commands."""
 import argparse
 import yaml
+import os
+import repodoc
+from repodoc.log import configure_logger
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
@@ -13,6 +16,7 @@ __all__ = [
     "writer",
     "render",
     "argparse",
+    "configure_logger",
     "main",
     "community_health",
     "sphinx_docs",
@@ -27,6 +31,7 @@ __all__ = [
     "bump_version",
     "dot_files",
     "update_config_file",
+    "resolve_template_name",
 ]
 
 
@@ -39,24 +44,53 @@ def get_all_template_variables(Templates=render.Templates):
     return sorted(list(set(all_vars)))
 
 
+def resolve_template_name(tname):
+    """Resolve template name."""
+    t_name = tname.split(".j2")[-1]
+    if t_name in render.LicenceMap.keys():
+        return render.LicenceMap.get(t_name)
+    elif t_name in render.DocMap.keys():
+        return render.DocMap.get(t_name)
+    elif t_name in render.CommunityHealth_Map.keys():
+        return render.CommunityHealth_Map.get(t_name)
+    elif t_name in render.RootMap.keys():
+        return render.RootMap.get(t_name)
+    else:
+        return
+
+
 def get_template_variables(args):
     """Return all variables for the given template."""
     template_name = args.template_name
     t_name = template_name if template_name.endswith(
         ".j2") else template_name + ".j2"
-    t_vars = render.get_variables(t_name)
+    t_vars = render.get_variables(resolve_template_name(t_name))
     print(yaml.dump(t_vars))
     return t_vars
 
 
-def gen_config_file(*args, **kwargs):
-    """Generate Sample Configuration File."""
-    filename = "repodoc_config.yml"
+def gen_default_context():
+    """Generate Default Context Dict for Configuration."""
     variables = get_all_template_variables()
-    list_vs = ["install_requires", "console_scripts"]
-    values = ["" if v not in list_vs else [""] for v in variables]
-    # values = variables
-    data = dict(zip(variables, values))
+
+    def get_var_default(v):
+        list_vs = ["install_requires", "console_scripts"]
+        bool_vs = ["readthedocs", "pypi", "create_docs"]
+        if v in list_vs:
+            return [
+                "",
+            ]
+        elif v in bool_vs:
+            return True
+        else:
+            return ""
+
+    return dict(zip(variables, list(map(get_var_default, variables))))
+
+
+def gen_config_file(filename="repodoc_config.yml", **kwargs):
+    """Generate Sample Configuration File."""
+    data = gen_default_context()
     with open(filename, "w") as wf:
         yaml.dump(data, wf, Dumper=Dumper)
     print(f"Generated Configuration in {filename}")
@@ -140,8 +174,7 @@ def community_health(args):
 def dot_files(args):
     """Generate all dot files .gitignore,.gitattributes,.mailmap."""
     kwargs = config_from_file(args.config_file)
-    dotfile_templates = [".gitignore.j2", ".gitattributes.j2", ".mailmap.j2"]
-    for t_name in dotfile_templates:
+    for t_name in render.DotTemplates:
         writer.write_rendered_template(
             *render.render_template(t_name, **kwargs),
         )
@@ -249,6 +282,18 @@ def main():
         action="store_true",
         dest="use_conf",
     )
+    parser.add_argument(
+        "--verbose",
+        help="Turn on Verbose Mode.",
+        action="store_true",
+        dest="verbose",
+    )
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version=f"{repodoc.__name__}  v{repodoc.__version__}",
+    )
     subparsers = parser.add_subparsers()
     # Begin vars_parser Subparser
     vars_parser = subparsers.add_parser(
@@ -342,7 +387,7 @@ def main():
         "--program-name",
         action="store",
         dest="program_name",
-        required=True,
+        default=os.path.basename(os.path.abspath(os.path.curdir)),
         help="Program Name",
     )
     # End Licence Subparser
