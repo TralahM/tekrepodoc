@@ -398,6 +398,7 @@ def main():
         help="Turn on Verbose Mode.",
         action="store_true",
         dest="verbose",
+        default=False,
     )
     parser.add_argument(
         "-v",
