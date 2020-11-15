@@ -1,7 +1,9 @@
 """Jinja2 template renderer."""
 import jinja2
 import jinja2.meta
+import logging
 
+logger = logging.getLogger("repodoc")
 Loader = jinja2.PackageLoader(package_name="repodoc", package_path="templates")
 Environment = jinja2.Environment(
     loader=Loader,
@@ -26,23 +28,29 @@ DotTemplates = [x for x in RootTemplates if x.startswith(".")]
 DotMap = {x.split("/")[-1].split(".j2")[0]: x for x in DotTemplates}
 
 
-def get_variables(template_name):
+def get_variables(template_name, logger=logger):
     """Return all undeclared variables in template."""
     template_source = Environment.loader.get_source(
         Environment, template_name)[0]
     parsed_content_ast = Environment.parse(template_source)
     variables = jinja2.meta.find_undeclared_variables(parsed_content_ast)
+    logger.debug(f"{__name__}.get_variables({template_name}) = {variables}.")
     return list(variables)
 
 
-def get_output_filename(template_name):
+def get_output_filename(template_name, logger=logger):
     """Return Destination output filename for given template_name."""
-    return template_name.split(".j2")[0]
+    output_filename = template_name.split(".j2")[0]
+    logger.debug(
+        f"{__name__}.get_output_filename({template_name}) = {output_filename}."
+    )
+    return output_filename
 
 
-def render_template(template_name, **kwargs):
+def render_template(template_name, logger=logger, **kwargs):
     """Render template_name with kwargs."""
     template = Environment.get_template(template_name)
+    logger.debug(f"{__name__}.render_template({template_name}).")
     return (get_output_filename(template_name), template.render(**kwargs))
 
 

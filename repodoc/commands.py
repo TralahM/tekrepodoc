@@ -14,7 +14,7 @@ try:
 except ImportError:
     from yaml import Loader, Dumper
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("repodoc")
 
 __all__ = [
     "writer",
@@ -43,11 +43,11 @@ __all__ = [
 ]
 
 
-def get_all_template_variables(Templates=render.Templates):
+def get_all_template_variables(Templates=render.Templates, logger=logger):
     """Return all template variables."""
     all_vars = []
     for t_name in Templates:
-        t_vars = render.get_variables(t_name)
+        t_vars = render.get_variables(t_name, logger=logger)
         all_vars.extend(t_vars)
     return sorted(list(set(all_vars)))
 
@@ -69,14 +69,14 @@ def resolve_template_name(tname):
 
 def get_template_variables(args):
     """Return all variables for the given template."""
-    configure_logger(
+    logger = configure_logger(
         stream_level="DEBUG" if args.verbose else "INFO",
         debug_file=None,
     )
     template_name = args.template_name
     t_name = template_name if template_name.endswith(
         ".j2") else template_name + ".j2"
-    t_vars = render.get_variables(resolve_template_name(t_name))
+    t_vars = render.get_variables(resolve_template_name(t_name), logger=logger)
     print(yaml.dump(t_vars))
     return t_vars
 
@@ -170,7 +170,7 @@ def config(args):
 
 def community_health(args):
     """Generate Community Health Guidelines."""
-    configure_logger(
+    logger = configure_logger(
         stream_level="DEBUG" if args.verbose else "INFO",
         debug_file=None,
     )
@@ -178,7 +178,8 @@ def community_health(args):
         kwargs = config_from_file(args.config_file)
     else:
         ch_vars = get_all_template_variables(
-            Templates=render.CommunityHealth_Templates)
+            Templates=render.CommunityHealth_Templates, logger=logger
+        )
         ch_vals = [
             args.author_email,
             args.author_name,
@@ -189,34 +190,43 @@ def community_health(args):
         kwargs = dict(zip(ch_vars, ch_vals))
     for t_name in render.CommunityHealth_Templates:
         writer.write_rendered_template(
-            *render.render_template(t_name, **kwargs))
+            *render.render_template(t_name, logger=logger, **kwargs),
+            logger=logger,
+        )
     return
 
 
 def dot_files(args):
     """Generate all dot files .gitignore,.gitattributes,.mailmap."""
-    configure_logger(
+    logger = configure_logger(
         stream_level="DEBUG" if args.verbose else "INFO",
         debug_file=None,
     )
     kwargs = config_from_file(args.config_file)
     for t_name in render.DotTemplates:
         writer.write_rendered_template(
-            *render.render_template(t_name, **kwargs),
+            *render.render_template(
+                t_name,
+                logger=logger,
+                **kwargs,
+            ),
+            logger=logger,
         )
     return
 
 
 def sphinx_docs(args):
     """Generate Sphinx Documentation Templates."""
-    configure_logger(
+    logger = configure_logger(
         stream_level="DEBUG" if args.verbose else "INFO",
         debug_file=None,
     )
     if args.use_conf:
         kwargs = config_from_file(args.config_file)
     else:
-        ch_vars = get_all_template_variables(Templates=render.DocTemplates)
+        ch_vars = get_all_template_variables(
+            Templates=render.DocTemplates, logger=logger
+        )
         ch_vals = [
             args.author_name,
             args.program_name,
@@ -225,33 +235,39 @@ def sphinx_docs(args):
         kwargs = dict(zip(ch_vars, ch_vals))
     for t_name in render.DocTemplates:
         writer.write_rendered_template(
-            *render.render_template(t_name, **kwargs))
+            *render.render_template(t_name, logger=logger, **kwargs),
+            logger=logger,
+        )
     return
 
 
 def licence(args):
     """Generate Licence Command."""
-    configure_logger(
+    logger = configure_logger(
         stream_level="DEBUG" if args.verbose else "INFO",
         debug_file=None,
     )
     if args.use_conf:
         kwargs = config_from_file(args.config_file)
     else:
-        ch_vars = get_all_template_variables(Templates=render.LicenceTemplates)
+        ch_vars = get_all_template_variables(
+            Templates=render.LicenceTemplates, logger=logger
+        )
         ch_vals = [
             args.author_name,
             args.program_name,
         ]
         kwargs = dict(zip(ch_vars, ch_vals))
     writer.write_rendered_template(
-        *render.render_licence(args.licence, **kwargs))
+        *render.render_licence(args.licence, logger=logger, **kwargs),
+        logger=logger,
+    )
     return
 
 
 def readme(args):
     """Generate README command."""
-    configure_logger(
+    logger = configure_logger(
         stream_level="DEBUG" if args.verbose else "INFO",
         debug_file=None,
     )
@@ -265,20 +281,29 @@ def readme(args):
             args.repo_name,
         ]
         kwargs = dict(zip(ch_vars, ch_vals))
-    writer.write_rendered_template(*render.render_readme(**kwargs))
+    writer.write_rendered_template(
+        *render.render_readme(
+            logger=logger,
+            **kwargs,
+        ),
+        logger=logger,
+    )
     return
 
 
 def pypi_project(args):
     """Generate Pypi Manifest,setup.cfg,setup.py Command."""
-    configure_logger(
+    logger = configure_logger(
         stream_level="DEBUG" if args.verbose else "INFO",
         debug_file=None,
     )
     if args.use_conf:
         kwargs = config_from_file(args.config_file)
     else:
-        ch_vars = get_all_template_variables(Templates=render.Pypi_Templates)
+        ch_vars = get_all_template_variables(
+            Templates=render.Pypi_Templates,
+            logger=logger,
+        )
         ch_vals = [
             args.author_email,
             args.author_name,
@@ -293,17 +318,19 @@ def pypi_project(args):
         kwargs = dict(zip(ch_vars, ch_vals))
     for t_name in render.Pypi_Templates:
         writer.write_rendered_template(
-            *render.render_template(t_name, **kwargs))
+            *render.render_template(t_name, logger=logger, **kwargs),
+            logger=logger,
+        )
     return
 
 
 def bump_version(args):
     """Increment Project Package Version in setup.cfg and docs/conf.py."""
-    configure_logger(
+    logger = configure_logger(
         stream_level="DEBUG" if args.verbose else "INFO",
         debug_file=None,
     )
-    return
+    return logger
 
 
 def configure(args):
