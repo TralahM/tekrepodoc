@@ -5,22 +5,26 @@ import os
 import logging
 import repodoc
 from repodoc.log import configure_logger
+from repodoc import writer
+from repodoc import render
+from repodoc import prompt
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
 except ImportError:
     from yaml import Loader, Dumper
-from . import writer
-from . import render
 
 logger = logging.getLogger(__name__)
 
 __all__ = [
     "writer",
     "render",
+    "prompt",
     "argparse",
     "configure_logger",
     "main",
+    "epilog",
+    "description",
     "community_health",
     "sphinx_docs",
     "licence",
@@ -96,9 +100,11 @@ def gen_default_context():
     return dict(zip(variables, list(map(get_var_default, variables))))
 
 
-def gen_config_file(filename="repodoc_config.yml", **kwargs):
+def gen_config_file(
+    filename="repodoc_config.yml", context=gen_default_context(), **kwargs
+):
     """Generate Sample Configuration File."""
-    data = gen_default_context()
+    data = context
     with open(filename, "w") as wf:
         yaml.dump(data, wf, Dumper=Dumper)
     logger.info(f"Generated Configuration in {filename}")
@@ -127,7 +133,7 @@ def config(args):
         debug_file=None,
     )
     to_append = ["install_requires", "console_scripts"]
-    bool_vals = ["readthedocs", "use_docs", "pypi"]
+    bool_vals = ["readthedocs", "create_docs", "pypi"]
     config = config_from_file(args.config_file)
     if args.list:
         print(yaml.dump(config))
@@ -146,7 +152,7 @@ def config(args):
                 config[args.add[0]] = args.add[1]
         update_config_file(args.config_file, config)
     if args.init:
-        gen_config_file()
+        configure(args)
     if args.set:
         if args.set[0] in to_append:
             config[args.set[0]] = args.set[1].split(",")
@@ -300,19 +306,57 @@ def bump_version(args):
     return
 
 
-def configure(**kwargs):
+def configure(args):
     """Return Configuration Dictionary."""
-    return
+    if args.use_conf:
+        context = config_from_file(args.config_file)
+    else:
+        context = gen_default_context()
+    bool_values = [k for k, v in context.items() if isinstance(v, bool)]
+    list_values = [k for k, v in context.items() if isinstance(v, list)]
+    for key, default in context.items():
+        if key in bool_values:
+            context[key] = prompt.read_user_yes_no(key, default)
+        elif key in list_values:
+            context[key] = prompt.read_user_list(
+                key, ",".join(default), sep=",")
+        elif key == "licence":
+            context[key] = prompt.read_user_choice(
+                key, list(render.LicenceMap.keys()))
+        else:
+            context[key] = prompt.read_user_variable(key, default)
+    # return context
+    return gen_config_file(context=context)
 
 
 def usage(*args, **kwargs):
-    """Print Usage Instructions."""
-    return
+    """Print Description and Epilog."""
+    print(description())
+    print()
+    print(epilog())
+
+
+def description(*args, **kwargs):
+    """Return Description."""
+    import art
+
+    return art.text2art(
+        f"{repodoc.__name__} {repodoc.__version__}",
+        font="standard",
+    )
+
+
+def epilog(*args, **kwargs):
+    """Return Epilog."""
+    author = "Tralah M Brian (TralahM) " + "<musyoki.brian@tralahtek.com>"
+    github = "https://github.com/TralahM/tekrepodoc"
+    return f"""Author:\t{author}.
+Project:\t<{github}>"""
 
 
 def main():
     """Run Main Entry Point."""
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(epilog=epilog())
     parser.set_defaults(func=usage, use_conf=False,
                         config_file="repodoc_config.yml")
     parser.add_argument(
