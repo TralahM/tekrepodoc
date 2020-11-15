@@ -6,14 +6,17 @@ console_scripts:
 install_requires:
 - PyYaml
 - jinja2
+- art
 - jinja2-time
 language: python
-licence: GPLv2
+licence: GPLv3
 package_name: tekrepodoc
 program_description: Utility Tool to Generate Common Project Files using sensible
   templates every one can agree on. Useful for Git Repositories, Supports Sphinx templates,
   Community Health Files, READMEs, pypi project configurations.
 program_name: tekrepodoc
 readthedocs: true
+pypi: true
+create_docs: true
 repo_name: tekrepodoc
 version: 'attr: repodoc.__version__'
