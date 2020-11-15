@@ -14,6 +14,20 @@ def read_user_variable(var_name, default_value):
     return click.prompt(var_name, default=default_value)
 
 
+def read_user_list(var_name, default_value="'',", sep=","):
+    """Prompt user for input and return the parsed value as list or default.
+
+    :param str var_name: Variable of the context to query the user
+    :param default_value: Value that will be returned if no input happens
+    :param sep: Value that will be used to as a separator for the list.
+    """
+    return click.prompt(
+        var_name,
+        default=default_value,
+        value_proc=lambda x: x.split(sep),
+    )
+
+
 def read_user_yes_no(question, default_value):
     """Prompt the user to reply with 'yes' or 'no' (or equivalent values).
 
