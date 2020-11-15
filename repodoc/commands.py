@@ -54,7 +54,7 @@ def get_all_template_variables(Templates=render.Templates, logger=logger):
 
 def resolve_template_name(tname):
     """Resolve template name."""
-    t_name = tname.split(".j2")[-1]
+    t_name = tname.split(".j2")[0]
     if t_name in render.LicenceMap.keys():
         return render.LicenceMap.get(t_name)
     elif t_name in render.DocMap.keys():
@@ -73,12 +73,22 @@ def get_template_variables(args):
         stream_level="DEBUG" if args.verbose else "INFO",
         debug_file=None,
     )
-    template_name = args.template_name
-    t_name = template_name if template_name.endswith(
-        ".j2") else template_name + ".j2"
-    t_vars = render.get_variables(resolve_template_name(t_name), logger=logger)
-    print(yaml.dump(t_vars))
-    return t_vars
+    if args.get_vars_all:
+        print(yaml.dump(get_all_template_variables(logger=logger)))
+        return
+    elif args.get_vars_list:
+        print(yaml.dump(render.TemplateNames))
+        return
+    else:
+        template_name = args.template_name
+        t_name = (
+            template_name if template_name.endswith(
+                ".j2") else template_name + ".j2"
+        )
+        t_vars = render.get_variables(
+            resolve_template_name(t_name), logger=logger)
+        print(yaml.dump(t_vars))
+        return t_vars
 
 
 def gen_default_context():
