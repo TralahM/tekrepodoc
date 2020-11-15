@@ -404,6 +404,7 @@ def main():
         dest="use_conf",
     )
     parser.add_argument(
+        "-vv",
         "--verbose",
         help="Turn on Verbose Mode.",
         action="store_true",
@@ -423,10 +424,31 @@ def main():
         help=get_template_variables.__doc__,
     )
     vars_parser.set_defaults(func=get_template_variables)
-    vars_parser.add_argument(
-        "template_name",
+    vp_grp = vars_parser.add_mutually_exclusive_group(required=True)
+    vp_grp.add_argument(
+        "-t",
+        "--template_name",
+        choices=render.TemplateNames,
+        action="store",
+        dest="template_name",
         help="name of template e.g README.md or README.md.j2",
         metavar="Template_Name.ext.j2",
+    )
+    vp_grp.add_argument(
+        "-a",
+        "--all",
+        action="store_true",
+        dest="get_vars_all",
+        default=False,
+        help="Get all variables for all available templates.",
+    )
+    vp_grp.add_argument(
+        "-l",
+        "--list-all",
+        action="store_true",
+        dest="get_vars_list",
+        default=False,
+        help="List all available template names.",
     )
     # End vars_parser Subparser
     # Begin config Subparser
