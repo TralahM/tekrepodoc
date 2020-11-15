@@ -26,6 +26,16 @@ RootTemplates = [x for x in Templates if "/" not in x]
 RootMap = {x.split("/")[-1].split(".j2")[0]: x for x in RootTemplates}
 DotTemplates = [x for x in RootTemplates if x.startswith(".")]
 DotMap = {x.split("/")[-1].split(".j2")[0]: x for x in DotTemplates}
+_Maps = [
+    RootMap,
+    DotMap,
+    DocMap,
+    LicenceMap,
+    CommunityHealth_Map,
+]
+TemplatesMap = {}
+[TemplatesMap.update(m) for m in _Maps]
+TemplateNames = list(TemplatesMap.keys())
 
 
 def get_variables(template_name, logger=logger):
