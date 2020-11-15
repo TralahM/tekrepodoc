@@ -40,6 +40,7 @@ __all__ = [
     "dot_files",
     "update_config_file",
     "resolve_template_name",
+    "get_main_parser",
 ]
 
 
@@ -366,8 +367,18 @@ def configure(args):
     return gen_config_file(context=context)
 
 
-def usage(*args, **kwargs):
-    """Print Description and Epilog."""
+def usage(args, **kwargs):
+    """Handle Main repodoc Entrypoint without subcommands."""
+    if args.bash_completion:
+        import shtab
+
+        print(shtab.complete(args.parser, shell="bash"))
+        return
+    if args.zsh_completion:
+        import shtab
+
+        print(shtab.complete(args.parser, shell="zsh"))
+        return
     print(description())
     print()
     print(epilog())
@@ -391,17 +402,35 @@ def epilog(*args, **kwargs):
 Project:\t<{github}>"""
 
 
-def main():
-    """Run Main Entry Point."""
+def get_main_parser():
+    """Return main argparse.ArgumentParser object."""
     parser = argparse.ArgumentParser(epilog=epilog())
-    parser.set_defaults(func=usage, use_conf=False,
-                        config_file="repodoc_config.yml")
+    parser.set_defaults(
+        func=usage,
+        use_conf=False,
+        parser=parser,
+        config_file="repodoc_config.yml",
+    )
     parser.add_argument(
         "-u",
         "--use-config-file",
         help="use config file for template variables.",
         action="store_true",
         dest="use_conf",
+    )
+    parser.add_argument(
+        "-bc",
+        "--bash-completion",
+        help="Print Bash Completion Script.",
+        action="store_true",
+        dest="bash_completion",
+    )
+    parser.add_argument(
+        "-zc",
+        "--zsh-completion",
+        help="Print ZSH Completion Script.",
+        action="store_true",
+        dest="zsh_completion",
     )
     parser.add_argument(
         "-vv",
@@ -576,6 +605,12 @@ def main():
     )
     dot_files_parser.set_defaults(func=dot_files)
     # End dot_files Subparser
+    return parser
+
+
+def main():
+    """Run Main Entry Point."""
+    parser = get_main_parser()
     args = parser.parse_args()
     args.func(args)
     return
