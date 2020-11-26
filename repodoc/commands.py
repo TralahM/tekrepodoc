@@ -145,11 +145,14 @@ def config(args):
     )
     to_append = ["install_requires", "console_scripts"]
     bool_vals = ["readthedocs", "create_docs", "pypi"]
-    config = config_from_file(args.config_file)
+    if not args.init:
+        config = config_from_file(args.config_file)
     if args.list:
         print(yaml.dump(config))
+        return
     if args.get:
         print(config.get(args.get))
+        return
     if args.add:
         if args.add[0] in to_append:
             config[args.add[0]] = config[args.add[0]].append(args.add[1])
@@ -162,8 +165,10 @@ def config(args):
             else:
                 config[args.add[0]] = args.add[1]
         update_config_file(args.config_file, config)
+        return
     if args.init:
         configure(args)
+        return
     if args.set:
         if args.set[0] in to_append:
             config[args.set[0]] = args.set[1].split(",")
@@ -176,6 +181,7 @@ def config(args):
             else:
                 config[args.set[0]] = args.set[1]
         update_config_file(args.config_file, config)
+        return
     return
 
 
@@ -415,7 +421,7 @@ def get_main_parser():
         "-u",
         "--use-config-file",
         help="use config file for template variables.",
-        action="store_true",
+        action="store_false",
         dest="use_conf",
     )
     parser.add_argument(
