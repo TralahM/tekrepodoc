@@ -421,7 +421,7 @@ def get_main_parser():
         "-u",
         "--use-config-file",
         help="use config file for template variables.",
-        action="store_false",
+        action="store_true",
         dest="use_conf",
     )
     parser.add_argument(
@@ -494,6 +494,7 @@ def get_main_parser():
     config_parser.set_defaults(
         func=config,
         add=False,
+        use_conf=False,
         set=False,
         get=False,
     )
