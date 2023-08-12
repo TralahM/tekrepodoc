@@ -72,6 +72,13 @@ Author: Tralah M Brian (TralahM) <musyoki.brian@tralahtek.com>. Project:
 <https://github.com/TralahM/tekrepodoc>
 ```
 
+### First Generate a Configuration File
+
+```console
+repodoc config --init
+
+```
+
 ## Documentation
 
 [![Documentation](https://img.shields.io/badge/Docs-tekrepodoc-blue.svg?style=for-the-badge)](https://tekrepodoc.readthedocs.io)
