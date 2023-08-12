@@ -15,7 +15,7 @@ Templates = Environment.list_templates()
 LicenceTemplates = [x for x in Templates if x.startswith("licences")]
 LicenceMap = {x.split("/")[-1].split(".j2")[0]: x for x in LicenceTemplates}
 DocTemplates = [x for x in Templates if x.startswith("docs")]
-DocTemplates.append("readthedocs.yml.j2")
+DocTemplates.append(".readthedocs.yaml.j2")
 DocMap = {x.split("/")[-1].split(".j2")[0]: x for x in DocTemplates}
 CommunityHealth_Templates = [x for x in Templates if x.startswith(".github")]
 CommunityHealth_Map = {
