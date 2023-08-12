@@ -31,6 +31,47 @@ pip install -e .
 ```
 ---
 
+## CLI Usage
+In terminal type
+```console
+repodoc -h
+```
+
+```
+usage: repodoc [-h] [-u] [-bc] [-zc] [-vv] [-v]
+               {get_vars,config,licence,readme,community_health,comh,ch,pypi_project,pypi,sphinx_docs,docs,sphinx,dot_files,dots}
+               ...
+
+options:
+  -h, --help            show this help message and exit
+  -u, --use-config-file
+                        use config file for template variables.
+  -bc, --bash-completion
+                        Print Bash Completion Script.
+  -zc, --zsh-completion
+                        Print ZSH Completion Script.
+  -vv, --verbose        Turn on Verbose Mode.
+  -v, --version         show program's version number and exit
+
+subcommands:
+  {get_vars,config,licence,readme,community_health,comh,ch,pypi_project,pypi,sphinx_docs,docs,sphinx,dot_files,dots}
+    get_vars            Return all variables for the given template.
+    config              Configure Subcommand to init,set,get,list configs.
+    licence             Generate Licence Command.
+    readme              Generate README command.
+    community_health (comh, ch)
+                        Generate Community Health Guidelines.
+    pypi_project (pypi)
+                        Generate Pypi Manifest,setup.cfg,setup.py Command.
+    sphinx_docs (docs, sphinx)
+                        Generate Sphinx Documentation Templates.
+    dot_files (dots)    Generate all dot files
+                        .gitignore,.gitattributes,.mailmap.
+
+Author: Tralah M Brian (TralahM) <musyoki.brian@tralahtek.com>. Project:
+<https://github.com/TralahM/tekrepodoc>
+```
+
 ## Documentation
 
 [![Documentation](https://img.shields.io/badge/Docs-tekrepodoc-blue.svg?style=for-the-badge)](https://tekrepodoc.readthedocs.io)
